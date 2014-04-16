@@ -129,7 +129,7 @@
 
                     <!-- <dryRun>true</dryRun> -->
                     <repositoryOwner>wpa</repositoryOwner>          <!-- github username -->
-                    <repositoryName>m2p2-repository</repositoryName>      <!-- github repo name -->
+                    <repositoryName>-m2p2-repository</repositoryName>      <!-- github repo name -->
                     <branch>refs/heads/gh-pages</branch>                  <!-- remote branch name -->
                     <path>maven/snapshots</path>
                     <oauth2Token>${env.TOKEN}</oauth2Token>
