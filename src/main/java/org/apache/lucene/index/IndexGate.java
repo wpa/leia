@@ -18,13 +18,13 @@ import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.IOContext;
 import org.apache.lucene.store.IndexInput;
 import org.apache.lucene.util.Version;
-import org.getopt.luke.Luke;
+import org.eu.bitzone.Leia;
 import org.getopt.luke.KeepAllIndexDeletionPolicy;
 
 /**
  * This class allows us to peek at various Lucene internals, not available
  * through public APIs (for good reasons, but inquiring minds want to know ...).
- * 
+ *
  * @author ab
  *
  */
@@ -89,7 +89,7 @@ public class IndexGate {
     knownExtensions.put(IndexFileNames.GEN_EXTENSION, "generation number - global file");
     knownExtensions.put(IndexFileNames.SEGMENTS, "per-commit list of segments and user data");
   }
-  
+
   public static String getFileFunction(String file) {
     if (file == null || file.trim().length() == 0) return file;
     String res = null;
@@ -115,7 +115,7 @@ public class IndexGate {
     }
     return res;
   }
-  
+
   private static void detectOldFormats(FormatDetails res, int format) {
     switch (format) {
     case OLD_FORMAT:
@@ -190,9 +190,9 @@ public class IndexGate {
       }
       break;
     }
-    res.genericName = res.genericName + " (" + format + ")";    
+    res.genericName = res.genericName + " (" + format + ")";
   }
-  
+
   public static FormatDetails getIndexFormat(final Directory dir) throws Exception {
     SegmentInfos.FindSegmentsFile fsf = new SegmentInfos.FindSegmentsFile(dir) {
 
@@ -227,14 +227,14 @@ public class IndexGate {
             }
           }
         } finally {
-          in.close();          
+          in.close();
         }
         return res;
       }
     };
     return (FormatDetails)fsf.run();
   }
-  
+
   public static boolean preferCompoundFormat(Directory dir) throws Exception {
     SegmentInfos infos = new SegmentInfos();
     infos.read(dir);
@@ -248,24 +248,24 @@ public class IndexGate {
     }
     return compound > nonCompound;
   }
-  
+
   public static void deletePendingFiles(Directory dir, IndexDeletionPolicy policy) throws Exception {
     SegmentInfos infos = new SegmentInfos();
     infos.read(dir);
-    IndexWriterConfig cfg = new IndexWriterConfig(Luke.LV, new WhitespaceAnalyzer(Luke.LV));
+    IndexWriterConfig cfg = new IndexWriterConfig(Leia.LV, new WhitespaceAnalyzer(Leia.LV));
     IndexWriter iw = new IndexWriter(dir, cfg);
     IndexFileDeleter deleter = new IndexFileDeleter(dir, policy, infos, null, iw);
     deleter.close();
     iw.close();
   }
-  
+
   public static List<String> getDeletableFiles(Directory dir) throws Exception {
     List<String> known = getIndexFiles(dir);
     Set<String> dirFiles = new HashSet<String>(Arrays.asList(dir.listAll()));
     dirFiles.removeAll(known);
     return new ArrayList<String>(dirFiles);
    }
-  
+
   public static List<String> getIndexFiles(Directory dir) throws Exception {
     List<IndexCommit> commits = null;
     try {
@@ -284,7 +284,7 @@ public class IndexGate {
     Collections.sort(names);
     return names;
   }
-  
+
   public static class FormatDetails {
     public String genericName = "N/A";
     public String capabilities = "N/A";

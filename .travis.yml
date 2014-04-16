@@ -1,1 +1,5 @@
 language: java
+script: mvn clean deploy
+env:
+  global:
+    secure: Em0AD4G4kn32JmxltsQ0n+Ms+Fy7ARfuHmOmip37pMJw0IyFqcvA/rruoO3T/KmaPhALELj1wZMU3hnDcURmz97FonnrTHPwuFi362ctSU8r9WRgOGZB3Sus5IJK1fLpnNw2WAMEv8aoZNGzGrTJrgd9BFQpc8p5/dewZC5BMOE=

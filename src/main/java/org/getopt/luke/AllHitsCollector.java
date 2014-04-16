@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.getopt.luke;
 
@@ -10,14 +10,14 @@ import org.apache.lucene.index.AtomicReaderContext;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.search.Scorer;
 
-class AllHitsCollector extends AccessibleHitCollector {
+public class AllHitsCollector extends AccessibleHitCollector {
   private ArrayList<AllHit> hits = new ArrayList<AllHit>();
-  
+
   public AllHitsCollector(boolean outOfOrder, boolean shouldScore) {
     this.outOfOrder = outOfOrder;
     this.shouldScore = shouldScore;
   }
-  
+
   public void collect(int doc) {
     float score = 1.0f;
     if (shouldScore) {
@@ -30,11 +30,11 @@ class AllHitsCollector extends AccessibleHitCollector {
     }
     hits.add(new AllHit(docBase + doc, score));
   }
-  
+
   public int getTotalHits() {
     return hits.size();
   }
-  
+
   public int getDocId(int i) {
     return ((AllHitsCollector.AllHit)hits.get(i)).docId;
   }
@@ -46,7 +46,7 @@ class AllHitsCollector extends AccessibleHitCollector {
   private static class AllHit {
     public int docId;
     public float score;
-    
+
     public AllHit(int docId, float score) {
       this.docId = docId;
       this.score = score;

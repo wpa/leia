@@ -1,16 +1,18 @@
 package org.getopt.luke;
 
+import org.eu.bitzone.Leia;
+
 public abstract class SlowThread extends Thread {
   private Object ui;
-  private Luke app;
+  private Leia app;
 
-  public SlowThread(Luke app) {
+  public SlowThread(Leia app) {
     this.app = app;
-    ui = app.addComponent(null, "/xml/wait.xml", null, null);    
+    ui = app.addComponent(null, "/xml/wait.xml", null, null);
   }
-  
+
   public abstract void execute();
-  
+
   public final void run() {
     app.add(ui);
     try {

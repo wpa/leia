@@ -14,6 +14,7 @@ import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
+import org.eu.bitzone.Leia;
 import org.getopt.luke.Luke;
 import org.getopt.luke.LukePlugin;
 import org.mozilla.javascript.Context;
@@ -27,7 +28,7 @@ import thinlet.Thinlet;
  * This is a JavaScript interactive shell. All elements
  * of Luke framework are made available to the plugin by putting
  * them into JS Context.
- * 
+ *
  * @author Andrzej Bialecki &lt;ab@getopt.org&gt;
  */
 public class ScriptingPlugin extends LukePlugin {
@@ -95,11 +96,11 @@ public class ScriptingPlugin extends LukePlugin {
     ScriptableObject.putProperty(shell, "myUi", myUi);
     return true;
   }
-  
+
   public void setWrap(Object cbWrap, Object ta) {
     app.setBoolean(ta, "wrap", app.getBoolean(cbWrap, "selected"));
   }
-  
+
   public void execute(String cmd) {
     //System.out.println("exec '" + cmd + "'");
     scroll.append(cmd);
@@ -110,7 +111,7 @@ public class ScriptingPlugin extends LukePlugin {
     app.setInteger(console, "start", scroll.length());
     app.setInteger(console, "end", scroll.length());
   }
-  
+
   public void ins(Object ta) {
     String text = app.getString(ta, "text");
     if (!text.substring(0, scroll.length()).equals(scroll.toString())) {
@@ -123,14 +124,14 @@ public class ScriptingPlugin extends LukePlugin {
     int idx = cmd.indexOf('\n');
     if (cmd.endsWith("\n") && shell.getContext().stringIsCompilableUnit(cmd)) execute(cmd);
   }
-  
+
   public void rem(Object ta) {
     int start = app.getInteger(ta, "start");
     if (start < scroll.length()) {
       app.setString(ta, "text", scroll.toString());
       app.setInteger(ta, "start", scroll.length());
       app.setInteger(ta, "end", scroll.length());
-    }    
+    }
   }
   public void car(Object ta) {
     int start = app.getInteger(ta, "start");
@@ -139,12 +140,12 @@ public class ScriptingPlugin extends LukePlugin {
       app.setInteger(ta, "end", scroll.length());
     }
   }
-  
+
   public void actionHelp(Object ta) {
     String cmd = "help()\n";
     execute(cmd);
   }
-  
+
   public void actionSample() {
     StringBuffer sb = new StringBuffer();
     try {
@@ -160,25 +161,25 @@ public class ScriptingPlugin extends LukePlugin {
       e.printStackTrace();
       app.errorMsg("Loading failed: " + e.getMessage());
       return;
-    }      
+    }
   }
 }
 
 class TAWriter extends PrintWriter {
-  public Luke app;
+  public Leia app;
   public Object ta;
   public StringBuffer scroll;
   public StringWriter writer;
 
-  public TAWriter(Luke app, Object ta, StringBuffer scroll, StringWriter writer) {
+  public TAWriter(Leia app2, Object ta, StringBuffer scroll, StringWriter writer) {
     super(writer);
     this.ta = ta;
     this.scroll = scroll;
-    this.app = app;
+    this.app = app2;
     this.writer = writer;
   }
-  
-  
+
+
   public void flush() {
     super.flush();
     scroll.append(writer.getBuffer());

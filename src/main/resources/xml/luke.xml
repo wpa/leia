@@ -150,7 +150,7 @@
 						  <panel gap="2">
                 <label font="bold" text="Browse documents with this term  "/>
                 <label text="( "/>
-                <label name="dFreq" text="0"/>         
+                <label name="dFreq" text="0"/>
                 <label halign="left" text=" documents)"/>
   					  </panel>
   					  <panel columns="1" rowspan="2">
@@ -264,7 +264,7 @@
   					      <tab text="QueryParser">
 						        <panel weighty="1" weightx="1" valign="fill" halign="fill"
 						                  columns="2" gap="4" top="2" bottom="2" left="2" right="2">
-						          <checkbox colspan="2" action="showParsed" name="ckXmlParser" text="Use XML Query Parser"/>        
+						          <checkbox colspan="2" action="showParsed" name="ckXmlParser" text="Use XML Query Parser"/>
 						          <label font="bold" text="Additional QueryParser settings:"/>
         						  <checkbox colspan="2" action="showParsed" name="ckWild" text="Allow leading * in wildcard queries"/>
                       <checkbox colspan="2" action="showParsed" name="ckPosIncr" text="Enable positionIncrements"/>
@@ -287,7 +287,7 @@
                         <choice text="AND"/>
 						          </combobox>
                       <label text="BooleanQuery maxClauseCount:"/>
-                      <spinbox name="bqMaxCount" columns="6" text="1024"/> 
+                      <spinbox name="bqMaxCount" columns="6" text="1024"/>
 					          </panel>
 					      </tab>
 					      <tab text="Similarity">
@@ -437,12 +437,12 @@
 					     </table>
 				    </panel>
 				</splitpane>
-		</tab>		
+		</tab>
 		<tab name="pluginsTab" text="Plugins" icon="/img/tools.gif">
 			<tabbedpane name="pluginsTabs" halign="fill" valign="fill"
 				weightx="1" weighty="1" placement="left"/>
 		</tab>
-		
+
 	</tabbedpane>
 	<panel name="status" weightx="1" halign="fill" left="2" right="2" gap="4">
 		<label text="Index name:"/>
@@ -454,6 +454,6 @@
 		  <label name="slowmsg" foreground="#aa0000" font="bold"/>
 		  <separator/>
 		</panel>
-		<button type="link" valign="center" icon="/img/luke.gif" action="goUrl(this)" property="url=http://www.getopt.org/luke" tooltip="Go to Luke home page"/>
+		<button type="link" valign="center" icon="/img/luke.gif" action="goUrl(this)" property="url=http://leia.java.net" tooltip="Go to Leia home page"/>
 	</panel>
 </panel>

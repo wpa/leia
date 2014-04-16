@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 
+import org.eu.bitzone.Leia;
 import org.getopt.luke.Luke;
 
 public class VocabChart extends Component {
@@ -26,15 +27,15 @@ public class VocabChart extends Component {
 
   float max = 0;
   float total = 0;
-  
-  Luke app = null;
+
+  Leia app = null;
   Object container = null;
 
   public VocabChart() {
   }
 
-  public VocabChart(Luke app, Object container) {
-    this.app = app;
+  public VocabChart(Leia app2, Object container) {
+    this.app = app2;
     this.container = container;
   }
 

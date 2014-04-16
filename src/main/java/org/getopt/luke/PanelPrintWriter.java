@@ -2,16 +2,18 @@ package org.getopt.luke;
 
 import java.io.*;
 
+import org.eu.bitzone.Leia;
+
 public class PanelPrintWriter extends PrintStream {
   static ByteArrayOutputStream baos = new ByteArrayOutputStream();
   Object panel;
-  Luke luke;
-  
-  public PanelPrintWriter(Luke luke, Object panel) {
+  Leia leia;
+
+  public PanelPrintWriter(Leia leia, Object panel) {
     super(baos);
     baos.reset();
     // retrieve previous text and separate it
-    String text = luke.getString(panel, "text");
+    String text = leia.getString(panel, "text");
     if (text != null && text.length() > 0) {
       try {
         baos.write(text.getBytes());
@@ -22,7 +24,7 @@ public class PanelPrintWriter extends PrintStream {
       }
     }
     this.panel = panel;
-    this.luke = luke;
+    this.leia = leia;
   }
 
   /* (non-Javadoc)
@@ -37,9 +39,9 @@ public class PanelPrintWriter extends PrintStream {
       e.printStackTrace();
     }
     String text = new String(baos.toByteArray());
-    luke.setString(panel, "text", text);
-    luke.setInteger(panel, "start", text.length());
-    luke.setInteger(panel, "end", text.length());
+    leia.setString(panel, "text", text);
+    leia.setInteger(panel, "start", text.length());
+    leia.setInteger(panel, "end", text.length());
   }
 
 }
