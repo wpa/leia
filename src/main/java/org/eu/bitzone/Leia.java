@@ -206,13 +206,15 @@ import thinlet.Thinlet;
  * This class allows you to browse a <a href="jakarta.apache.org/lucene">Lucene </a> index in several ways - by
  * document, by term, by query, and by most frequent terms.
  *
+ * @author Wojtek Padula
  * @author Andrzej Bialecki
+ *
  */
 public class Leia extends Thinlet implements ClipboardOwner {
 
   private static final long serialVersionUID = -470469999079073156L;
 
-  public static Version LV = Version.LUCENE_40;
+  public static Version LV = Version.LUCENE_CURRENT;
 
   private Directory dir = null;
   String pName = null;

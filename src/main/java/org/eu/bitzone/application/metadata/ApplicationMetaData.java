@@ -21,7 +21,7 @@ public class ApplicationMetaData {
 	@Override
 	public String toString() {
 		return String.format(
-				"Leia sister of Luke  - Lucene Index Toolbox, v [%s(%s)] (%s) Lucene version supported : %s", version,
+				"Leia sister of Luke  - Lucene Enhanced Interface Application, v [%s(%s)] (%s) Lucene version supported : %s", version,
 				buildNumber, date, luceneVersionSupported);
 	}
 

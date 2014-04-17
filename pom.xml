@@ -8,13 +8,24 @@
 	<packaging>jar</packaging>
 
 	<name>leia</name>
-	<description>Lucene Index Toolbox heavily based on Luke</description>
+	<description>Lucene Enhanced Interface Application heavily based on Luke</description>
 	<inceptionYear>2014</inceptionYear>
 	<scm>
 		<connection>scm:git:git@github.com:wpa/leia.gitt</connection>
 		<url>scm:git:git@github.com:wpa/leia.git</url>
 		<developerConnection>scm:git:git@github.com:wpa/leia.git</developerConnection>
 	</scm>
+	     <ciManagement>
+        <system>Travis CI</system>
+        <url>https://travis-ci.org/wpa/leia</url>
+        <notifiers>
+            <notifier>
+                <type>mail</type>
+                <sendOnSuccess>true</sendOnSuccess>
+                <sendOnFailure>true</sendOnFailure>
+            </notifier>
+        </notifiers>
+    </ciManagement>
 	<url>http://java.net/projects/leia</url>
 	<issueManagement>
 		<system>JIRA</system>
@@ -33,6 +44,7 @@
 			<id>wpa</id>
 			<name>Wojtek Padula</name>
 			<email>wojciech.padula@gmail.com</email>
+			<url>http://wojtek.padula.me</url>
 			<roles>
 				<role>developer</role>
 			</roles>
