@@ -66,7 +66,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<lucene.version>4.1.0</lucene.version>
+		<lucene.version>4.6.0</lucene.version>
 		<slf4j.version>1.7.1</slf4j.version>
 		<solr.version>4.0.0-BETA</solr.version>
 		<hadoop.version>0.20.2</hadoop.version>
