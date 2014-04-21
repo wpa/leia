@@ -37,4 +37,10 @@ public class NoScoringScorer extends Scorer {
     return 1;
   }
 
+@Override
+public long cost() {
+	// TODO Auto-generated method stub
+	return 0;
+}
+
 }

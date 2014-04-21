@@ -163,7 +163,7 @@ public class Util {
   public static Collection<String> fieldNames(IndexReader r, boolean indexedOnly) throws IOException {
     AtomicReader reader;
     if (r instanceof CompositeReader) {
-      reader = new SlowCompositeReaderWrapper((CompositeReader)r);
+      reader = SlowCompositeReaderWrapper.wrap((CompositeReader)r);
     } else {
       reader = (AtomicReader)r;
     }
@@ -230,7 +230,7 @@ public class Util {
   
   public static byte encodeNormValue(float v, String fieldName, TFIDFSimilarity sim) throws Exception {
     try {
-      return sim.encodeNormValue(v);
+      return (byte) sim.encodeNormValue(v);
     } catch (Exception e) {
       throw new Exception("ERROR encoding norm for field "  + fieldName + ":" + e.toString());
     }    

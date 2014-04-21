@@ -80,7 +80,6 @@ import org.apache.lucene.index.CheckIndex;
 import org.apache.lucene.index.CheckIndex.Status.SegmentInfoStatus;
 import org.apache.lucene.index.CompositeReader;
 import org.apache.lucene.index.DirectoryReader;
-import org.apache.lucene.index.DocValues;
 import org.apache.lucene.index.DocsAndPositionsEnum;
 import org.apache.lucene.index.DocsEnum;
 import org.apache.lucene.index.FieldInfo;
@@ -99,7 +98,7 @@ import org.apache.lucene.index.LogMergePolicy;
 import org.apache.lucene.index.MergePolicy;
 import org.apache.lucene.index.MultiFields;
 import org.apache.lucene.index.MultiReader;
-import org.apache.lucene.index.SegmentInfoPerCommit;
+import org.apache.lucene.index.SegmentCommitInfo;
 import org.apache.lucene.index.SegmentInfos;
 import org.apache.lucene.index.SegmentReader;
 import org.apache.lucene.index.SlowCompositeReaderWrapper;
@@ -1008,13 +1007,7 @@ public class Leia extends Thinlet implements ClipboardOwner {
       }
       cfg.setIndexDeletionPolicy(policy);
       final MergePolicy mp = cfg.getMergePolicy();
-      if (mp instanceof LogMergePolicy) {
-        ((LogMergePolicy) mp).setUseCompoundFile(IndexGate.preferCompoundFormat(dir));
-      }
-      else if (mp instanceof TieredMergePolicy) {
-        ((TieredMergePolicy) cfg.getMergePolicy()).setUseCompoundFile(IndexGate
-          .preferCompoundFormat(dir));
-      }
+      cfg.setUseCompoundFile(IndexGate.preferCompoundFormat(dir));
       final IndexWriter iw = new IndexWriter(dir, cfg);
       return iw;
     }
@@ -1385,7 +1378,7 @@ public class Leia extends Thinlet implements ClipboardOwner {
       }
       showFiles(dir, null);
       if (ir instanceof CompositeReader) {
-        ar = new SlowCompositeReaderWrapper((CompositeReader) ir);
+        ar = SlowCompositeReaderWrapper.wrap((CompositeReader) ir);
       }
       else if (ir instanceof AtomicReader) {
         ar = (AtomicReader) ir;
@@ -1673,7 +1666,7 @@ public class Leia extends Thinlet implements ClipboardOwner {
       errorMsg("Error reading segment infos for '" + segName + ": " + e.toString());
       return;
     }
-    for (final SegmentInfoPerCommit si : infos.asList()) {
+    for (final SegmentCommitInfo si : infos.asList()) {
       final Object r = create("row");
       add(segTable, r);
       Object cell = create("cell");
@@ -1719,7 +1712,7 @@ public class Leia extends Thinlet implements ClipboardOwner {
     if (row == null) {
       return;
     }
-    final SegmentInfoPerCommit si = (SegmentInfoPerCommit) getProperty(row, "si");
+    final SegmentCommitInfo si = (SegmentCommitInfo) getProperty(row, "si");
     if (si == null) {
       showStatus("Missing SegmentInfoPerCommit???");
       return;
@@ -2359,7 +2352,7 @@ public class Leia extends Thinlet implements ClipboardOwner {
         final Object fixRes = find(dialog, "fixRes");
         final PanelPrintWriter ppw = (PanelPrintWriter) getProperty(dialog, "ppw");
         try {
-          ci.fixIndex(status, c);
+          ci.fixIndex(status);
           setString(fixRes, "text", "DONE. Review the output above.");
         }
         catch (final Exception e) {
@@ -2755,18 +2748,10 @@ public class Leia extends Thinlet implements ClipboardOwner {
           cfg.setIndexDeletionPolicy(policy);
           cfg.setTermIndexInterval(tii);
           final MergePolicy p = cfg.getMergePolicy();
-          if (p instanceof LogMergePolicy) {
-            ((LogMergePolicy) p).setUseCompoundFile(useCompound);
+          cfg.setUseCompoundFile(useCompound);
             if (useCompound) {
-              ((LogMergePolicy) p).setNoCFSRatio(1.0);
+              p.setNoCFSRatio(1.0);
             }
-          }
-          else if (p instanceof TieredMergePolicy) {
-            ((TieredMergePolicy) p).setUseCompoundFile(useCompound);
-            if (useCompound) {
-              ((TieredMergePolicy) p).setNoCFSRatio(1.0);
-            }
-          }
           cfg.setInfoStream(ppw);
           iw = new IndexWriter(dir, cfg);
           final long startSize = Util.calcTotalFileSize(pName, dir);
@@ -3344,6 +3329,7 @@ public class Leia extends Thinlet implements ClipboardOwner {
     if (f != null) {
       try {
         if (ar != null && info.hasNorms()) {
+        	ar.getFieldInfos().fieldInfo(fName).getNormType();
           final DocValues norms = ar.normValues(fName);
           final String val = Util.normsToString(norms, fName, docid, sim);
           setString(cell, "text", val);

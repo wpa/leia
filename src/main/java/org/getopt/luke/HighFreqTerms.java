@@ -18,6 +18,7 @@ package org.getopt.luke;
  */
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -185,18 +186,28 @@ public class HighFreqTerms {
   }
 
   public static long getTotalTermFreq(final IndexReader reader, final String field, final BytesRef termtext) throws Exception {
-    final BytesRef br = termtext;
     long totalTF = 0;
     try {
-      final Bits liveDocs = MultiFields.getLiveDocs(reader);
-      totalTF = MultiFields.totalTermFreq(reader, field, termtext);
+     totalTF = totalTermFreq(reader, field, termtext);
       return totalTF;
     } catch (final Exception e) {
       return 0;
     }
   }
+  
+  private static long totalTermFreq(IndexReader reader, String field, BytesRef text) throws IOException {
+	    final Terms terms = MultiFields.getTerms(reader, field);
+	    if (terms != null) {
+	      final TermsEnum termsEnum = terms.iterator(null);
+	      if (termsEnum.seekExact(text)) {
+	        return termsEnum.totalTermFreq();
+	      }
+	    }
+	    return 0;
+	  }
+  
 
-  public static void fillQueue(final TermsEnum termsEnum, final TermStatsQueue tiq, final String field) throws Exception {
+public static void fillQueue(final TermsEnum termsEnum, final TermStatsQueue tiq, final String field) throws Exception {
 
     while (true) {
       final BytesRef term = termsEnum.next();
@@ -242,4 +253,5 @@ final class TermStatsQueue extends PriorityQueue<TermStats> {
   protected boolean lessThan(final TermStats termInfoA, final TermStats termInfoB) {
     return termInfoA.docFreq < termInfoB.docFreq;
   }
+  
 }
