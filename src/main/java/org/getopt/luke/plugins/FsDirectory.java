@@ -335,4 +335,22 @@ public class FsDirectory extends Directory {
     // not easily supported... we would have to track all open outputs
   }
 
+@Override
+public void clearLock(String name) throws IOException {
+	// TODO Auto-generated method stub
+	
+}
+
+@Override
+public void setLockFactory(LockFactory lockFactory) throws IOException {
+	// TODO Auto-generated method stub
+	
+}
+
+@Override
+public LockFactory getLockFactory() {
+	// TODO Auto-generated method stub
+	return null;
+}
+
 }
