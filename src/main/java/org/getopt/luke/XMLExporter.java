@@ -24,7 +24,7 @@ public class XMLExporter extends Observable {
   private List<String> fieldNames;
   private Map<String,Decoder> decoders;
   private FieldInfos infos;
-  
+
   public XMLExporter(IndexReader indexReader, String indexPath,
           Map<String, Decoder> decoders) throws IOException {
     this.indexReader = indexReader;
@@ -43,15 +43,15 @@ public class XMLExporter extends Observable {
     fieldNames.addAll(Util.fieldNames(indexReader, false));
     Collections.sort(fieldNames);
   }
-  
+
   public void abort() {
     abort = true;
   }
-  
+
   public boolean isAborted() {
     return abort;
   }
-  
+
   public boolean exportJS(String outputFile, boolean decode, boolean gzip, boolean preamble, boolean info,
           String rootElementName) throws Exception {
     OutputStream out;
@@ -62,9 +62,9 @@ public class XMLExporter extends Observable {
     }
     return export(out, decode, preamble, info, rootElementName, null);
   }
-  
+
   /**
-   * 
+   *
    * @param output output stream
    * @param decode use defined field value decoders
    * @param preamble include XML preamble
@@ -170,7 +170,7 @@ public class XMLExporter extends Observable {
     running = false;
     return !pn.aborted;
   }
-  
+
   private void writeDoc(BufferedWriter bw, int docNum, Document doc, boolean decode,
           Bits liveDocs) throws Exception {
     bw.write("<doc id='" + docNum + "'>\n");
@@ -180,20 +180,12 @@ public class XMLExporter extends Observable {
       if (fields == null || fields.length == 0) {
         continue;
       }
-      bw.write("<field name='" + Util.xmlEscape(fields[0].name()));
-      DocValues dv = atomicReader.normValues(fields[0].name());
-      if (dv != null) {
-        // export raw value - we don't know what similarity was used
-        String type = dv.getType().toString();
-        if (type.contains("INT")) {
-          bw.write("' norm='" + dv.getSource().getInt(docNum));
-        } else if (type.startsWith("FLOAT")) {
-          bw.write("' norm='" + dv.getSource().getFloat(docNum));          
-        } else if (type.startsWith("BYTES")) {
-          dv.getSource().getBytes(docNum, bytes);
-          bw.write("' norm='" + Util.bytesToHex(bytes, false));
-        }
-      } 
+           String fName=fields[0].name();
+          bw.write("<field name='" + Util.xmlEscape(fName));
+         NumericDocValues nv = atomicReader.getNormValues(fields[0].name());
+       if (nv!=null) {
+          bw.write("' norm='" + nv.get(docNum));
+      }
       bw.write("' flags='" + Util.fieldFlags((Field)fields[0], infos.fieldInfo(fields[0].name())) + "'>\n");
       for (IndexableField ixf : fields) {
         String val = null;
@@ -221,7 +213,7 @@ public class XMLExporter extends Observable {
     }
     bw.write("</doc>\n");
   }
-  
+
   private void writeTermVector(BufferedWriter bw, Terms tfv, Bits liveDocs) throws Exception {
     bw.write("<tv>\n");
     TermsEnum te = tfv.iterator(null);
@@ -264,7 +256,7 @@ public class XMLExporter extends Observable {
     }
     bw.write("</tv>\n");
   }
-  
+
   private void writeIndexInfo(BufferedWriter bw) throws Exception {
     bw.write("<info>\n");
     IndexInfo indexInfo = new IndexInfo(indexReader, indexPath);
@@ -300,7 +292,7 @@ public class XMLExporter extends Observable {
       List<IndexCommit> commits = DirectoryReader.listCommits(dir);
       bw.write(" <commits count='" + commits.size() + "'>\n");
       for (IndexCommit ic : commits) {
-        bw.write("  <commit segment='" + ic.getSegmentsFileName() + "' segCount='" + ic.getSegmentCount() + 
+        bw.write("  <commit segment='" + ic.getSegmentsFileName() + "' segCount='" + ic.getSegmentCount() +
             "' deleted='" + ic.isDeleted() + "' files='" + ic.getFileNames().size() + "'>\n");
         for (Object p : ic.getFileNames()) {
           bw.write("   <file name='" + p.toString() + "'/>\n");
@@ -334,7 +326,7 @@ public class XMLExporter extends Observable {
       }
     }
     bw.write(" </topTerms>\n");
-    bw.write("</info>\n");    
+    bw.write("</info>\n");
   }
 
   /**
@@ -343,7 +335,7 @@ public class XMLExporter extends Observable {
   public boolean isRunning() {
     return running;
   }
-  
+
   public static void main(String[] args) throws Exception {
     if (args.length < 2) {
       System.err.println("Usage: XMLExporter <indexPath> <outputFile> [-gzip] [-onlyInfo] [-range ..expr..]");

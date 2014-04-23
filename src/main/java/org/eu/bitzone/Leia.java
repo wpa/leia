@@ -98,6 +98,7 @@ import org.apache.lucene.index.LogMergePolicy;
 import org.apache.lucene.index.MergePolicy;
 import org.apache.lucene.index.MultiFields;
 import org.apache.lucene.index.MultiReader;
+import org.apache.lucene.index.NumericDocValues;
 import org.apache.lucene.index.SegmentCommitInfo;
 import org.apache.lucene.index.SegmentInfos;
 import org.apache.lucene.index.SegmentReader;
@@ -213,7 +214,7 @@ public class Leia extends Thinlet implements ClipboardOwner {
 
   private static final long serialVersionUID = -470469999079073156L;
 
-  public static Version LV = Version.LUCENE_CURRENT;
+  public static Version LV = Version.LUCENE_46;
 
   private Directory dir = null;
   String pName = null;
@@ -3330,7 +3331,7 @@ public class Leia extends Thinlet implements ClipboardOwner {
       try {
         if (ar != null && info.hasNorms()) {
         	ar.getFieldInfos().fieldInfo(fName).getNormType();
-          final DocValues norms = ar.normValues(fName);
+          final NumericDocValues norms = ar.getNormValues(fName);
           final String val = Util.normsToString(norms, fName, docid, sim);
           setString(cell, "text", val);
         }
@@ -3561,8 +3562,9 @@ public class Leia extends Thinlet implements ClipboardOwner {
     putProperty(dialog, "similarity", s);
     if (ar != null) {
       try {
-        final DocValues norms = ar.normValues(f.name());
-        final byte curBVal = (byte) norms.getSource().getInt(docNum.intValue());
+        final NumericDocValues norms = ar.getNormValues(f.name());
+        byte curBVal=0;
+        if (norms!=null) {curBVal=(byte)norms.get(docNum.intValue());}
         final float curFVal = Util.decodeNormValue(curBVal, f.name(), s);
         setString(curNorm, "text", String.valueOf(curFVal));
         setString(newNorm, "text", String.valueOf(curFVal));
