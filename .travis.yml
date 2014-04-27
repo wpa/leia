@@ -3,3 +3,14 @@ script: mvn clean deploy
 env:
   global:
     secure: Em0AD4G4kn32JmxltsQ0n+Ms+Fy7ARfuHmOmip37pMJw0IyFqcvA/rruoO3T/KmaPhALELj1wZMU3hnDcURmz97FonnrTHPwuFi362ctSU8r9WRgOGZB3Sus5IJK1fLpnNw2WAMEv8aoZNGzGrTJrgd9BFQpc8p5/dewZC5BMOE=
+	secure: ER5J0RP0xwDYHTlcz0ulMCUX/4tDvAMs9JXYYAayYBh9rghDgACGzfrEw2Nqt0SHRea81gx/RVlODkvXkAwjPsb42V78w7VYxvJuFlL32sFkYfITrEuj5BWeGcBDg/sqQA2UnmxYkwjt5eroeEuB671WGAicT85/LurEuHcdcj0=
+
+addons:
+  coverity_scan:
+    project:
+      name: "wpa/leia"
+      description: "Lucene Enhanced Interface Application"
+    notification_email: wojciech.padula@gmail.com
+    build_command_prepend:
+    build_command:
+    branch_pattern: coverity_scan
