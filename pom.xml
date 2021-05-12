@@ -67,7 +67,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<lucene.version>4.6.0</lucene.version>
 		<slf4j.version>1.7.1</slf4j.version>
-		<solr.version>4.6.0</solr.version>
+		<solr.version>8.8.2</solr.version>
 		<hadoop.version>0.20.2</hadoop.version>
 		<ehcache.version>1.6.0</ehcache.version>
 		<rhino.version>1.7R1</rhino.version>
